@@ -33,12 +33,12 @@ string testCode3(
   "answer R SUM OF 21.6 AN 20.4     BTW add two values and assign result\n"
   "VISIBLE answer\n"
   "VISIBLE SUM OF 1 AN SUM OF 0.3 0.037\n"
-  "I HAS A truth\n"
-  "truth R BOTH OF WIN WIN\n"
-  "VISIBLE truth\n"
-  "BOTH OF WIN AN FAIL\n"
-  "VISIBLE IT\n"
-  "VISIBLE \"iz coffeh tiem!\"\n"
+  //"I HAS A truth\n"
+  //"truth R BOTH OF WIN WIN\n"
+  //"VISIBLE truth\n"
+  //"BOTH OF WIN AN FAIL\n"
+  //"VISIBLE IT\n"
+  //"VISIBLE \"iz coffeh tiem\"!\n"
   "KTHXBYE"
 );
 
