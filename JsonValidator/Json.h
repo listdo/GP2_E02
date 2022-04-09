@@ -25,17 +25,22 @@ struct JsonGrammar : qi::grammar<Iterator, qi::space_type> {
           ident >> ":" >> troof >> -qi::lit(",")
           ;
 
-      // TODO: add the other types
-      arr = qi::lit("[") >> *(number >> -qi::lit(",")) >> "]"
+      arr = qi::lit("[") >> *(doubleValue >> -qi::lit(",")) >> "]" |
+            qi::lit("[") >> *(stringValue >> -qi::lit(",")) >> "]" |
+            qi::lit("[") >> *(number >> -qi::lit(",")) >> "]" |
+            qi::lit("[") >> *(troof >> -qi::lit(",")) >> "]"
             ;
 
       ident = qi::lit("\"") >> qi::lexeme[qi::alpha >> *(qi::alnum | '_')] >> qi::lit("\"");
-      number = qi::lexeme[+(qi::int_)];
-      doubleValue = qi::lexeme[+(qi::double_)];
-      troof = qi::lexeme[(qi::bool_)];
+      number = qi::lexeme[qi::int_];
+      doubleValue = qi::lexeme[qi::double_];
+      troof = qi::lexeme[qi::bool_];
 
-      // TODO: make this to proper strings
-      stringValue = qi::lit("\"View from 15th Floor\"") |
-                    qi::lit("\"http://www.example.com/image/481989943\"");
+      stringValue = qi::lit("\"") >> qi::lexeme[*(qi::alnum |
+                                                  qi::char_(' ') |
+                                                  qi::char_('/') |
+                                                  qi::char_(':') |
+                                                  qi::char_('.'))]
+                                  >> qi::lit("\"");
   }
 };
