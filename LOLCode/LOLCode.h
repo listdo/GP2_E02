@@ -63,37 +63,84 @@ struct LOLCodeGrammar : qi::grammar<Iterator, Skipper<Iterator>> {
   qi::rule<Iterator, Skipper<Iterator>> program, include, stat, visible, vardecl;
   qi::rule<Iterator, string(), Skipper<Iterator>> ident, string_literal;
   qi::rule<Iterator, Skipper<Iterator>, qi::locals<string>> assignment;
-  qi::rule<Iterator, NUMBAR, Skipper<Iterator>> mathexpr, sum;
+  qi::rule<Iterator, NUMBAR, Skipper<Iterator>> mathexpr, sum, mul, div;
+  qi::rule<Iterator, TROOF, Skipper<Iterator>> boolexpr, both, either, won, not;
 
   LOLCodeGrammar() : LOLCodeGrammar::base_type(program) {
 	  program = qi::lit("HAI")
 		  >> -include
 		  >> *stat
 		  >> "KTHXBYE";
+
 	  include = qi::lit("CAN")
 		  >> "HAS"
 		  >> ident
 		  >> "?";
+
 	  vardecl = qi::lit("I")
 		  >> "HAS"
 		  >> "A"
 		  >> ident [new_variable()];
-	  assignment = ident  [qi::_a = qi::_1]
+
+	  assignment = ident[qi::_a = qi::_1]
 		  >> "R"                 // v-------- NEEDED: phoenix::bind needed to call set_variable
-		  >> mathexpr     [phoenix::bind(&set_variable, qi::_a, qi::_1)];
-	  stat = visible | mathexpr | vardecl | assignment; // mathexpr -> expr == mathexpr | boolexpr
-	  mathexpr = sum | qi::double_; // ^------^------ ADDED: vardecl | assignment
+		  >> mathexpr[phoenix::bind(&set_variable, qi::_a, qi::_1)] |
+			 boolexpr[phoenix::bind(&set_variable, qi::_a, qi::_1)];
+	  
+	  stat = visible | mathexpr | boolexpr | vardecl | assignment; // mathexpr -> expr == mathexpr | boolexpr	 
+	  
+	  mathexpr = div | mul | sum | qi::double_; // ^------^------ ADDED: vardecl | assignment
+	  
+	  boolexpr = both | either | won | not |
+				 qi::bool_;
+		  
+	  both = qi::lit("BOTH")
+		  >> "OF"
+		  >> boolexpr[qi::_val = qi::_1]
+		  >> qi::lit("AN")
+		  >> boolexpr[qi::_val = (qi::_val && qi::_1)];
+
+	  either = qi::lit("EITHER")
+		  >> "OF"
+		  >> boolexpr[qi::_val = qi::_1]
+		  >> qi::lit("AN")
+		  >> boolexpr[qi::_val = (qi::_val || qi::_1)];
+
+	  won = qi::lit("WON")
+		  >> "OF"
+		  >> boolexpr[qi::_val = qi::_1]
+		  >> qi::lit("AN")
+		  >> boolexpr[qi::_val = (qi::_val && !qi::_1) || (!qi::_val && qi::_1)];
+
+	  not = qi::lit("NOT")
+		  >> boolexpr[qi::_val = !qi::_1];
+	  
+	  mul = qi::lit("MUL")
+		  >> "OF"
+		  >> mathexpr[qi::_val = qi::_1]
+		  >> -qi::lit("AN")
+		  >> mathexpr[qi::_val *= qi::_1];
+
+	  div = qi::lit("DIV")
+		  >> "OF"
+		  >> mathexpr[qi::_val = qi::_1]
+		  >> -qi::lit("AN")
+		  >> mathexpr[qi::_val /= qi::_1];
+
 	  sum = qi::lit("SUM")
 		  >> "OF"
 		  >> mathexpr [qi::_val = qi::_1]
 		  >> -qi::lit("AN")
 		  >> mathexpr [qi::_val += qi::_1];
+	  
 	  visible = qi::lit("VISIBLE") // think about VISIBLE ..... ! (newline y/n?)
 		  >> (  string_literal     [cout << qi::_1 << endl]
 			  // v----- switched order of mathexpr and ident
+			  | boolexpr		   [print_value()]
 			  | mathexpr           [print_value()] // <------- IMPORTANT: order of alternatives
 			  | ident              [print_variable()] // <---- IMPORTANT: order of alternatives
 			  );
+
 	  ident = qi::lexeme[qi::alpha >> *(qi::alnum | '_')];
 	  string_literal = qi::lexeme['"' >> *(qi::char_ - '"') >> '"'];
   }
