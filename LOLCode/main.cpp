@@ -27,18 +27,18 @@ string testCode2(
 string testCode3(
   "HAI\n"
   "BTW i'm a comment\n"
-  //"I   HAS  A    answer             BTW declare variable\n"
-  //"answer R 21.0                    BTW assign value\n"
-  //"VISIBLE answer                   BTW print value\n"
-  //"answer R SUM OF 21.6 AN 20.4     BTW add two values and assign result\n"
-  //"VISIBLE answer\n"
-  //"VISIBLE SUM OF 1 AN SUM OF 0.3 0.037\n"
+  "I   HAS  A    answer             BTW declare variable\n"
+  "answer R 21.0                    BTW assign value\n"
+  "VISIBLE answer                   BTW print value\n"
+  "answer R SUM OF 21.6 AN 20.4     BTW add two values and assign result\n"
+  "VISIBLE answer\n"
+  "VISIBLE SUM OF 1 AN SUM OF 0.3 0.037\n"
   "I HAS A truth\n"
-  "truth R WIN\n"	// Fixed the LOLCode at this point added missing AN
-  //"VISIBLE truth\n"
-  //"BOTH OF WIN AN FAIL\n"
-  //"VISIBLE IT\n"
-  //"VISIBLE \"iz coffeh tiem\"!\n"
+  "truth R BOTH OF WIN AN WIN\n"	// Fixed the LOLCode at this point added missing AN
+  "VISIBLE truth\n"
+  "BOTH OF WIN AN FAIL\n"
+  "VISIBLE IT\n"
+  "VISIBLE \"iz coffeh tiem\"!\n"
   "KTHXBYE"
 );
 
