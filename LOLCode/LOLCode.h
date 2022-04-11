@@ -84,13 +84,13 @@ struct LOLCodeGrammar : qi::grammar<Iterator, Skipper<Iterator>> {
 		  >> ident [new_variable()];
 
 	  assignment = ident[qi::_a = qi::_1]
-		  >> "R"                 // v-------- NEEDED: phoenix::bind needed to call set_variable
+		  >> "R"
 		  >> (mathexpr[phoenix::bind(&set_variable, qi::_a, qi::_1)] |
 			 boolexpr[phoenix::bind(&set_variable, qi::_a, qi::_1)]);
 	  
-	  stat = visible | mathexpr | boolexpr | vardecl | assignment; // mathexpr -> expr == mathexpr | boolexpr	 
+	  stat = visible | mathexpr | boolexpr | vardecl | assignment; 
 	  
-	  mathexpr = div | mul | sum | qi::double_; // ^------^------ ADDED: vardecl | assignment
+	  mathexpr = div | mul | sum | qi::double_;
 	  
 	  boolexpr = both | either | won | not | 
 			     troof_value;
@@ -134,13 +134,13 @@ struct LOLCodeGrammar : qi::grammar<Iterator, Skipper<Iterator>> {
 		  >> -qi::lit("AN")
 		  >> mathexpr [qi::_val += qi::_1];
 	  
-	  visible = qi::lit("VISIBLE") // think about VISIBLE ..... ! (newline y/n?)
+	  visible = qi::lit("VISIBLE")
 		  >> (  
 			  string_literal >> -qi::lit('!')	[cout << qi::_1 << endl]
 			  | boolexpr						[print_value()]
-			  | mathexpr						[print_value()] // <------- IMPORTANT: order of alternatives			  
+			  | mathexpr						[print_value()]			  
 			  | qi::lit("IT")					
-			  | ident							[print_variable()] // <---- IMPORTANT: order of alternatives  
+			  | ident							[print_variable()]
 			  );
 
 	  ident = qi::lexeme[qi::alpha >> *(qi::alnum | '_')];

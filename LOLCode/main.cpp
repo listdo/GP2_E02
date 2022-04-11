@@ -44,8 +44,26 @@ string testCode3(
 
 string testCode4(
   "HAI\n"
-  // TODO: implement additional tests
-  "KTHXBYE"
+  "I HAS A variable\n"
+  "variable R WIN\n"
+  "VISIBLE variable\n"
+  "I HAS A numbar\n"
+  "numbar R DIV OF 4 AN 2\n"
+  "VISIBLE numbar\n"
+  "VISIBLE numbar\n"
+  "VISIBLE numbar\n"
+  "numbar R MUL OF 4 AN 2\n"
+  "VISIBLE numbar\n"
+  "I HAS A var2\n"
+  "var2 R NOT WIN\n"
+  "VISIBLE var2\n"
+  "I HAS A var3\n"
+  "var3 R WON OF WIN AN FAIL\n"
+  "VISIBLE var3\n"
+  "I HAS A swoosh\n"
+  "swoosh R EITHER OF WIN AN FAIL\n"
+  "VISIBLE swoosh\n"
+  "KTHXBYE\n"
 );
 
 void testLOLCode(string description, string code) {
@@ -64,8 +82,8 @@ void testLOLCode(string description, string code) {
 }
 
 int main() {
-  testLOLCode("LOLCODE Test 1 (Hello World)", testCode1);
-  testLOLCode("LOLCODE Test 2 (Comments)", testCode2);
+  testLOLCode("LOLCODE Test 1 (Hello World)",			 testCode1);
+  testLOLCode("LOLCODE Test 2 (Comments)",				 testCode2);
   testLOLCode("LOLCODE Test 3 (Simple LOLCODE Program)", testCode3);
-//  testLOLCode("TODO: Implement additional tests", testCode4);
+  testLOLCode("LOLCODE Test 4 (Simple LOLCODE Program)", testCode4);
 }
